@@ -1,0 +1,49 @@
+public class Main {
+
+public Main() {
+
+}
+
+//My next button id is ctb85 and this is some code that automatically generated after I clicked it twice
+
+
+public String ctb85_action() {
+if(((Boolean)JSFUtils.getManagedBeanValue("bindings.Commit.enabled")) == false) {
+BindingContainer bindings = getBindings();
+OperationBinding operationBinding = bindings.getOperationBinding("First");
+Object result = operationBinding.execute();
+if (!operationBinding.getErrors().isEmpty()) {
+return null;
+}
+} else {
+FacesContext context = FacesContext.getCurrentInstance();
+context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Save or Undo Changes First!", null));
+}
+
+return null;
+}
+
+public BindingContainer getBindings() {
+return BindingContext.getCurrent().getCurrentBindingsEntry();
+}
+
+//code I copied from you not sure if I put it in the right place
+
+boolean changesExists() {
+boolean changesAvailable = false;
+// check application module
+ApplicationModule am = ADFUtils.getDCBindingContainer().getDataControl().getApplicationModule();
+changesAvailable = am.getTransaction().isDirty();
+
+// check binding context 
+BindingContext bc = BindingContext.getCurrent();
+String currentDataControlFrame = bc.getCurrentDataControlFrame();
+Boolean txnDirty = false;
+txnDirty =
+bc.findDataControlFrame(currentDataControlFrame).isTransactionDirty();
+
+return changesAvailable || txnDirty ;
+}
+
+
+}
